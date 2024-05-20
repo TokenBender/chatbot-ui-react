@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { FolderContext } from '../context/FolderContext';
 
 function Sidebar() {
-  const [folders, setFolders] = useState([{ name: 'Default', chats: [] }]);
+  const { folders, setFolders, selectedFolder, setSelectedFolder } = useContext(FolderContext);
   const [newFolder, setNewFolder] = useState('');
-  const [selectedFolder, setSelectedFolder] = useState('Default');
   const [renamingFolder, setRenamingFolder] = useState(null);
   const [renameValue, setRenameValue] = useState('');
 
@@ -31,8 +31,8 @@ function Sidebar() {
   };
 
   return (
-    <div className="col-3 bg-light border-right">
-      <div className="p-3">
+    <div className="col-3 bg-light border-right vh-100 p-3">
+      <div>
         <input
           type="text"
           className="form-control mb-2"
@@ -40,7 +40,7 @@ function Sidebar() {
           value={newFolder}
           onChange={(e) => setNewFolder(e.target.value)}
         />
-        <button className="btn btn-primary btn-block" onClick={addFolder}>
+        <button className="btn btn-primary btn-block mb-3" onClick={addFolder}>
           Add Folder
         </button>
       </div>

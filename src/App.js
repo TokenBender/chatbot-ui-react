@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Header />
       <div className="container-fluid">
-        <div className="row">
+        <div className="row content">
           <Sidebar />
           <ChatArea />
         </div>

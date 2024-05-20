@@ -1,12 +1,12 @@
 import React from 'react';
+import './Header.css';
 
 function Header() {
   return (
-    <nav className="navbar navbar-dark bg-dark">
+    <nav className="navbar navbar-dark bg-dark fixed-top">
       <span className="navbar-brand mb-0 h1">ChatKit</span>
-      <div>
-        <span className="navbar-text mr-3">GPT-3.5 Turbo</span>
-        <span className="navbar-text">Using API Key</span>
+      <div className="navbar-text ml-auto status-text">
+        GPT-3.5 Turbo <span className="api-key-text">Using API Key</span>
       </div>
     </nav>
   );

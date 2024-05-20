@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { FolderContext } from '../context/FolderContext';
 
 function ChatArea() {
@@ -39,8 +37,8 @@ function ChatArea() {
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
 
   return (
-    <div className="col-9 d-flex flex-column">
-      <div className="flex-grow-1 bg-white p-3 border-bottom">
+    <div className="col-9 d-flex flex-column chat-area">
+      <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
         {currentFolderChats.map((msg, index) => (
           <div key={index} className={msg.sender === 'user' ? 'text-right' : 'text-left'}>
             <div className="d-inline-block p-2 mb-2 border rounded">

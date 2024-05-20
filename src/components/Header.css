@@ -1,0 +1,22 @@
+.status-text {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* Ensure text is white for visibility */
+  }
+  
+  .api-key-text {
+    margin-left: 8px; /* Add some spacing between the model name and the API key text */
+    color: #bbbbbb; /* Light grey for differentiation */
+  }
+  
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-text {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  
