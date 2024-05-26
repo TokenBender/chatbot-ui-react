@@ -17,6 +17,7 @@ function ChatArea() {
         return folder;
       });
       setFolders(updatedFolders);
+      console.log('Updated folders after user message:', updatedFolders);
       setInput('');
       console.log('User message:', input);
       // Make a request to the backend server
@@ -41,6 +42,10 @@ function ChatArea() {
           });
           console.log('Updated folders with bot response:', updatedFoldersWithBotResponse);
           setFolders(updatedFoldersWithBotResponse);
+          setFolders(updatedFoldersWithBotResponse);
+        })
+        .catch((error) => {
+          console.error('Error fetching bot response:', error);
         });
       console.log('Updated folders:', updatedFolders);
     }
