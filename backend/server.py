@@ -19,8 +19,12 @@ def chat():
     user_message = data.get('message', '')
     chat_history = data.get('history', [])
     
-    # Add the user message to the chat history
-    chat_history.append({"role": "user", "content": user_message})
+    # Clear the chat history if the user message is empty
+    if not user_message:
+        chat_history = []
+    else:
+        # Add the user message to the chat history
+        chat_history.append({"role": "user", "content": user_message})
     
     print('Sending chat history to OpenRouter API:', chat_history)
     response = requests.post(
