@@ -22,13 +22,20 @@ function ChatArea() {
       console.log('Updated folders after user message:', updatedFolders);
       console.log('User message:', input);
       setInput('');
+
+      const currentFolderChats = updatedFolders.find((folder) => folder.name === selectedFolder)?.chats || [];
+      const chatHistory = currentFolderChats.map(chat => ({
+        role: chat.sender === 'user' ? 'user' : 'bot',
+        content: chat.text
+      }));
+
       // Make a request to the backend server
       fetch('http://127.0.0.1:5001/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: input, history: chatHistory }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -55,8 +62,6 @@ function ChatArea() {
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
   console.log('Current folder chats:', currentFolderChats);
 
-  console.log('Current folder chats:', currentFolderChats);
-
   return (
     <div className="col-9 d-flex flex-column chat-area">
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
@@ -77,12 +82,12 @@ function ChatArea() {
             placeholder="Enter message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              sendMessage();
-            }
-          }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
           />
           <div className="input-group-append">
             <button className="btn btn-primary" onClick={sendMessage}>
