@@ -7,6 +7,8 @@ function ChatArea() {
 
   const sendMessage = () => {
     if (input) {
+      console.log('Current folders before user message:', folders);
+      console.log('Selected folder:', selectedFolder);
       const updatedFolders = folders.map((folder) => {
         if (folder.name === selectedFolder) {
           return {
@@ -42,7 +44,6 @@ function ChatArea() {
           });
           console.log('Updated folders with bot response:', updatedFoldersWithBotResponse);
           setFolders(updatedFoldersWithBotResponse);
-          setFolders(updatedFoldersWithBotResponse);
         })
         .catch((error) => {
           console.error('Error fetching bot response:', error);
@@ -52,6 +53,7 @@ function ChatArea() {
   };
 
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
+  console.log('Current folder chats:', currentFolderChats);
 
   console.log('Current folder chats:', currentFolderChats);
 
