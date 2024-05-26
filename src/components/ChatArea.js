@@ -28,6 +28,7 @@ function ChatArea() {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log('Bot response:', data.response);
           const updatedFoldersWithBotResponse = folders.map((folder) => {
             if (folder.name === selectedFolder) {
               return {
@@ -37,6 +38,7 @@ function ChatArea() {
             }
             return folder;
           });
+          console.log('Updated folders with bot response:', updatedFoldersWithBotResponse);
           setFolders(updatedFoldersWithBotResponse);
         });
     }
