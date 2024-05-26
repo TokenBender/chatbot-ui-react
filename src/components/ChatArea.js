@@ -48,6 +48,8 @@ function ChatArea() {
 
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
 
+  console.log('Current folder chats:', currentFolderChats);
+
   return (
     <div className="col-9 d-flex flex-column chat-area">
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
@@ -58,6 +60,7 @@ function ChatArea() {
             </div>
           </div>
         ))}
+        {console.log('Rendering chat messages:', currentFolderChats)}
       </div>
       <div className="p-3 bg-light">
         <div className="input-group">
