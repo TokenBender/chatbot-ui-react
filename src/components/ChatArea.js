@@ -52,8 +52,8 @@ function ChatArea() {
     <div className="col-9 d-flex flex-column chat-area">
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
         {currentFolderChats.map((msg, index) => (
-          <div key={index} className={msg.sender === 'user' ? 'text-right' : 'text-left'}>
-            <div className="d-inline-block p-2 mb-2 border rounded">
+          <div key={index} className={`d-flex ${msg.sender === 'user' ? 'justify-content-end' : 'justify-content-start'}`}>
+            <div className={`d-inline-block p-2 mb-2 border rounded ${msg.sender === 'user' ? 'bg-primary text-white' : 'bg-light text-dark'}`}>
               {msg.text}
             </div>
           </div>
