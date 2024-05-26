@@ -77,6 +77,12 @@ function ChatArea() {
             placeholder="Enter message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           />
           <div className="input-group-append">
             <button className="btn btn-primary" onClick={sendMessage}>
