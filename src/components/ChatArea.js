@@ -19,7 +19,7 @@ function ChatArea() {
       setFolders(updatedFolders);
       setInput('');
       // Make a request to the backend server
-      fetch('http://localhost:5000/chat', {
+      fetch('http://127.0.0.1:5000/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
