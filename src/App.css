@@ -69,18 +69,31 @@
   padding: 1rem;
 }
 
-.bg-primary {
-  background-color: #007bff !important;
+.message {
+  display: flex;
+  margin-bottom: 10px;
 }
 
-.bg-light {
-  background-color: #f8f9fa !important;
+.message.user {
+  justify-content: flex-end;
 }
 
-.text-white {
-  color: #fff !important;
+.message.bot {
+  justify-content: flex-start;
 }
 
-.text-dark {
-  color: #343a40 !important;
+.message-content {
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message.user .message-content {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.message.bot .message-content {
+  background-color: #f8f9fa;
+  color: #343a40;
 }
