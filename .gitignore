@@ -35,3 +35,4 @@ yarn-error.log*
 *.sln
 *.sw?
 .aider*
+.env

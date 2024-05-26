@@ -25,7 +25,7 @@ function ChatArea() {
 
       const currentFolderChats = updatedFolders.find((folder) => folder.name === selectedFolder)?.chats || [];
       const chatHistory = currentFolderChats.map(chat => ({
-        role: chat.sender === 'user' ? 'user' : 'bot',
+        role: chat.sender === 'user' ? 'user' : 'assistant',
         content: chat.text
       }));
 
@@ -39,23 +39,22 @@ function ChatArea() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log('Bot response:', data.response);
-          const updatedFoldersWithBotResponse = updatedFolders.map((folder) => {
+          console.log('Assistant response:', data.response);
+          const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
             if (folder.name === selectedFolder) {
               return {
                 ...folder,
-                chats: [...folder.chats, { text: data.response, sender: 'bot' }],
+                chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
               };
             }
             return folder;
           });
-          console.log('Updated folders with bot response:', updatedFoldersWithBotResponse);
-          setFolders(updatedFoldersWithBotResponse);
+          console.log('Updated folders with assistant response:', updatedFoldersWithAssistantResponse);
+          setFolders(updatedFoldersWithAssistantResponse);
         })
         .catch((error) => {
-          console.error('Error fetching bot response:', error);
+          console.error('Error fetching assistant response:', error);
         });
-      console.log('Updated folders:', updatedFolders);
     }
   };
 
