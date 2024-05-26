@@ -18,19 +18,27 @@ function ChatArea() {
       });
       setFolders(updatedFolders);
       setInput('');
-      // Simulate chatbot response
-      setTimeout(() => {
-        const updatedFoldersWithBotResponse = folders.map((folder) => {
-          if (folder.name === selectedFolder) {
-            return {
-              ...folder,
-              chats: [...folder.chats, { text: 'This is a bot response', sender: 'bot' }],
-            };
-          }
-          return folder;
+      // Make a request to the backend server
+      fetch('http://localhost:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const updatedFoldersWithBotResponse = folders.map((folder) => {
+            if (folder.name === selectedFolder) {
+              return {
+                ...folder,
+                chats: [...folder.chats, { text: data.response, sender: 'bot' }],
+              };
+            }
+            return folder;
+          });
+          setFolders(updatedFoldersWithBotResponse);
         });
-        setFolders(updatedFoldersWithBotResponse);
-      }, 1000);
     }
   };
 
