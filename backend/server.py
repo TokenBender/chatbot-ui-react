@@ -22,6 +22,7 @@ def chat():
     # Add the user message to the chat history
     chat_history.append({"role": "user", "content": user_message})
     
+    print('Sending chat history to OpenRouter API:', chat_history)
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
