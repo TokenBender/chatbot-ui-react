@@ -18,6 +18,7 @@ function ChatArea() {
       });
       setFolders(updatedFolders);
       setInput('');
+      console.log('User message:', input);
       // Make a request to the backend server
       fetch('http://127.0.0.1:5001/chat', {
         method: 'POST',
@@ -41,6 +42,7 @@ function ChatArea() {
           console.log('Updated folders with bot response:', updatedFoldersWithBotResponse);
           setFolders(updatedFoldersWithBotResponse);
         });
+      console.log('Updated folders:', updatedFolders);
     }
   };
 
