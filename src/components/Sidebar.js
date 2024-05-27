@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Ensure this import is present
 
 function Sidebar() {
   const [chats, setChats] = useState([]);
@@ -30,12 +31,11 @@ function Sidebar() {
         {chats.map((chat, index) => (
           <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
             {renamingChat === index ? (
-              <>
-                <input
-                  type="text"
-                  value={renameValue}
-                  onChange={(e) => setRenameValue(e.target.value)}
-                  className="form-control"
+              <input
+                type="text"
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                className="form-control"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     const updatedChats = [...chats];
@@ -46,26 +46,25 @@ function Sidebar() {
                   }
                 }}
               />
-                <i
-                  className="fas fa-pencil-alt ml-2"
-                  onClick={() => {
-                    setRenamingChat(index);
-                    setRenameValue(chat.name);
-                  }}
-                ></i>
-                <i
-                  className="fas fa-trash ml-2"
-                  onClick={() => {
-                    const updatedChats = chats.filter((_, i) => i !== index);
-                    setChats(updatedChats);
-                  }}
-                ></i>
-              </>
             ) : (
-              <>
-                <span>{chat.name}</span>
-              </>
+              <span>{chat.name}</span>
             )}
+            <div>
+              <i
+                className="fas fa-pencil-alt ml-2"
+                onClick={() => {
+                  setRenamingChat(index);
+                  setRenameValue(chat.name);
+                }}
+              ></i>
+              <i
+                className="fas fa-trash ml-2"
+                onClick={() => {
+                  const updatedChats = chats.filter((_, i) => i !== index);
+                  setChats(updatedChats);
+                }}
+              ></i>
+            </div>
           </li>
         ))}
       </ul>
