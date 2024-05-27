@@ -147,4 +147,5 @@ button.btn-primary:hover {
   font-size: 1rem;
   font-weight: bold;
   color: #ffffff;
+  background-color: #1e1e1e; /* Ensure background color matches the dark theme */
 }
