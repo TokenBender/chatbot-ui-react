@@ -117,6 +117,38 @@ function ChatArea() {
                       setFolders(updatedFolders);
                       setEditingMessageIndex(null);
                       setEditingMessageValue('');
+                      // Fetch assistant response with history up to the edited message
+                      const currentFolderChats = updatedFolders.find((folder) => folder.name === selectedFolder)?.chats || [];
+                      const chatHistory = currentFolderChats.slice(0, index + 1).map(chat => ({
+                        role: chat.sender === 'user' ? 'user' : 'assistant',
+                        content: chat.text
+                      }));
+
+                      fetch('http://127.0.0.1:5001/chat', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: editingMessageValue, history: chatHistory, chat_name: selectedFolder }),
+                      })
+                        .then((response) => response.json())
+                        .then((data) => {
+                          console.log('Assistant response:', data.response);
+                          const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
+                            if (folder.name === selectedFolder) {
+                              return {
+                                ...folder,
+                                chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
+                              };
+                            }
+                            return folder;
+                          });
+                          console.log('Updated folders with assistant response:', updatedFoldersWithAssistantResponse);
+                          setFolders(updatedFoldersWithAssistantResponse);
+                        })
+                        .catch((error) => {
+                          console.error('Error fetching assistant response:', error);
+                        });
                     }
                   }}
                   className="form-control"
