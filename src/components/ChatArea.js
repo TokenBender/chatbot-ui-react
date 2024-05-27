@@ -100,7 +100,17 @@ function ChatArea() {
         .then((response) => response.json())
         .then((data) => {
           console.log('Search results:', data.results);
-          // Handle search results here
+          const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
+          const updatedFoldersWithSearchResults = folders.map((folder) => {
+            if (folder.name === selectedFolder) {
+              return {
+                ...folder,
+                chats: [...folder.chats, { text: searchResults, sender: 'assistant' }],
+              };
+            }
+            return folder;
+          });
+          setFolders(updatedFoldersWithSearchResults);
         })
         .catch((error) => {
           console.error('Error fetching search results:', error);
