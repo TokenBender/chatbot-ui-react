@@ -23,6 +23,9 @@
   background-color: #1e1e1e;
   color: #ffffff;
   border: 1px solid #333333;
+  font-size: 0.8rem; /* Reduce font size */
+  max-height: 200px; /* Set max height for dropdown */
+  overflow-y: auto; /* Make dropdown scrollable */
 }
 
 .navbar .form-control:focus {
