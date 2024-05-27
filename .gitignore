@@ -24,6 +24,9 @@ yarn-error.log*
 # openrouter folder
 /openrouter
 
+# openrouter folder
+/openrouter
+
 # editor directories and files
 .vscode/*
 !.vscode/settings.json
