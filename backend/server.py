@@ -72,7 +72,7 @@ def get_models():
     # Run the aider command to fetch models
     try:
         result = subprocess.run(['aider', '--models', 'openrouter/'], capture_output=True, text=True, check=True)
-        models = result.stdout.strip().split('\n')
+        models = [line.split(':')[0].strip() for line in result.stdout.strip().split('\n') if line.startswith('- ')]
     except subprocess.CalledProcessError as e:
         print('Error running aider command:', e)
         models = []
