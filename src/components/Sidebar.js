@@ -51,7 +51,7 @@ function Sidebar() {
             <div>
               <i
                 className="fas fa-pencil-alt ml-2"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', marginRight: '10px' }}
                 onClick={() => {
                   setRenamingChat(index);
                   setRenameValue(chat.name);
