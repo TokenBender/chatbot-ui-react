@@ -20,7 +20,13 @@ function Sidebar() {
                   onChange={(e) => setRenameValue(e.target.value)}
                   className="form-control"
                 />
-                <button className="btn btn-sm btn-success ml-2" onClick={() => renameFolder(index)}>
+                <button className="btn btn-sm btn-success ml-2" onClick={() => {
+                    const updatedChats = [...chats];
+                    updatedChats[index].name = renameValue;
+                    setChats(updatedChats);
+                    setRenamingChat(null);
+                    setRenameValue('');
+                  }}>
                   Save
                 </button>
               </>
