@@ -4,6 +4,16 @@
   color: #ffffff;
 }
 
+button.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+button.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
 .container-fluid {
   background-color: #1e1e1e;
 }

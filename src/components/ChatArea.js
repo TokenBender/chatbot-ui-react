@@ -87,6 +87,27 @@ function ChatArea() {
     }
   };
 
+  const handleSearch = () => {
+    console.log('Searching for:', input);
+    if (input) {
+      fetch('http://127.0.0.1:5001/bing-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: input }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Search results:', data.results);
+          // Handle search results here
+        })
+        .catch((error) => {
+          console.error('Error fetching search results:', error);
+        });
+    }
+  };
+
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
   console.log('Current folder chats:', currentFolderChats);
 
@@ -210,6 +231,9 @@ function ChatArea() {
           <div className="input-group-append">
             <button className="btn btn-primary" onClick={sendMessage}>
               Send
+            </button>
+            <button className="btn btn-secondary" onClick={handleSearch}>
+              <i className="fas fa-search"></i>
             </button>
           </div>
         </div>
