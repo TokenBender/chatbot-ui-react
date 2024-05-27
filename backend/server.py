@@ -3,6 +3,7 @@ from flask_cors import CORS
 import requests
 import os
 import json
+import subprocess
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -68,8 +69,13 @@ def config():
 
 @app.route('/models', methods=['GET'])
 def get_models():
-    # Simulate fetching models using the aider command
-    models = ["model1", "model2", "model3"]  # Replace with actual command output
+    # Run the aider command to fetch models
+    try:
+        result = subprocess.run(['aider', '--models', 'openrouter/'], capture_output=True, text=True, check=True)
+        models = result.stdout.strip().split('\n')
+    except subprocess.CalledProcessError as e:
+        print('Error running aider command:', e)
+        models = []
     return jsonify({'models': models})
 
 @app.route('/update-model', methods=['POST'])
