@@ -33,7 +33,13 @@ function Header() {
       body: JSON.stringify({ model: newModel }),
     })
       .then(response => response.json())
-      .then(data => setModelInfo(data))
+      .then(data => {
+        setModelInfo(data);
+        // Reload the backend server configuration
+        fetch('http://127.0.0.1:5001/reload-config', {
+          method: 'POST',
+        }).catch(error => console.error('Error reloading config:', error));
+      })
       .catch(error => console.error('Error updating model:', error));
   };
 

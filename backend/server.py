@@ -99,5 +99,12 @@ def update_model():
 
     return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
 
+@app.route('/reload-config', methods=['POST'])
+def reload_config():
+    global MODEL_NAME
+    load_dotenv()  # Reload environment variables
+    MODEL_NAME = os.getenv('MODEL_NAME')
+    return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
