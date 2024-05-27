@@ -137,7 +137,6 @@ button.btn-primary:hover {
   color: #fff;
 }
 
-.message.bot .message-content {
-  background-color: #f8f9fa;
-  color: #343a40;
+.bg-white {
+  background-color: #1e1e1e !important;
 }
