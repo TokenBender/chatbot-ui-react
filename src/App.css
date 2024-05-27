@@ -143,3 +143,8 @@ button.btn-primary:hover {
 .bg-white {
   background-color: #1e1e1e !important;
 }
+.chat-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
