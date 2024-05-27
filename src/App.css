@@ -149,3 +149,13 @@ button.btn-primary:hover {
   color: #ffffff;
   background-color: #000000; /* Set background color to black */
 }
+
+.list-group-item {
+  background-color: #1e1e1e; /* Set background color to match the dark theme */
+  color: #ffffff; /* Set text color to white */
+  border: none; /* Remove border */
+}
+
+.list-group-item .fas {
+  color: #ffffff; /* Set icon color to white */
+}
