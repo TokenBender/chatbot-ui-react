@@ -15,11 +15,16 @@ function Sidebar() {
     if (chats.length === 0) {
       setChats([{ name: generateDefaultChatName(), chats: [] }]);
     }
-  }, []);
+  }, [chats]);
+
+  useEffect(() => {
+    console.log('Chats state:', chats);
+  }, [chats]);
 
   return (
     <div className="col-3 bg-light border-right vh-100 p-3">
       <div>
+        {chats.length === 0 && <div>No chats available</div>}
       </div>
       <ul className="list-group list-group-flush">
         {chats.map((chat, index) => (
