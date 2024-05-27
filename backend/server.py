@@ -66,5 +66,32 @@ def config():
         'using_api_key': bool(OPENROUTER_API_KEY)
     })
 
+@app.route('/models', methods=['GET'])
+def get_models():
+    # Simulate fetching models using the aider command
+    models = ["model1", "model2", "model3"]  # Replace with actual command output
+    return jsonify({'models': models})
+
+@app.route('/update-model', methods=['POST'])
+def update_model():
+    data = request.json
+    new_model = data.get('model', '')
+
+    # Update the .env file with the new model
+    with open('.env', 'r') as file:
+        lines = file.readlines()
+
+    with open('.env', 'w') as file:
+        for line in lines:
+            if line.startswith('MODEL_NAME='):
+                file.write(f'MODEL_NAME={new_model}\n')
+            else:
+                file.write(line)
+
+    global MODEL_NAME
+    MODEL_NAME = new_model
+
+    return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
