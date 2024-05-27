@@ -36,7 +36,7 @@ def chat():
             "Content-Type": "application/json"
         },
         json={
-            "model": MODEL_NAME,
+            "model": MODEL_NAME.replace('openrouter/', ''),
             "messages": chat_history
         }
     )
