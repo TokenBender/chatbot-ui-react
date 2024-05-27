@@ -1,5 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { FolderContext } from '../context/FolderContext';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 function ChatArea() {
   const { folders, setFolders, selectedFolder } = useContext(FolderContext);
@@ -67,7 +70,27 @@ function ChatArea() {
         {currentFolderChats.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`} style={{ textAlign: 'left' }}>
             <div className="message-content" style={{ textAlign: 'left' }}>
-              {msg.text}
+              <ReactMarkdown
+                children={msg.text}
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        children={String(children).replace(/\n$/, '')}
+                        style={dark}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      />
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              />
             </div>
           </div>
         ))}
