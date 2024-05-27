@@ -95,52 +95,67 @@ function ChatArea() {
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
         {currentFolderChats.length > 0 ? currentFolderChats.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`} style={{ textAlign: 'left' }}>
-            {editingMessageIndex === index ? (
-              <input
-                type="text"
-                value={editingMessageValue}
-                onChange={(e) => setEditingMessageValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    setInput(editingMessageValue);
-                    sendMessage(index);
-                  }
-                }}
-                className="form-control"
-              />
-            ) : (
-              <div className="message-content" style={{ textAlign: 'left' }}>
-                <ReactMarkdown
-                  children={msg.text}
-                  components={{
-                    code({ node, inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || '');
-                      return !inline && match ? (
-                        <SyntaxHighlighter
-                          children={String(children).replace(/\n$/, '')}
-                          style={dark}
-                          language={match[1]}
-                          PreTag="div"
-                          {...props}
-                        />
-                      ) : (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      );
-                    },
+            {msg.sender === 'user' && editingMessageIndex === index ? (
+                <input
+                  type="text"
+                  value={editingMessageValue}
+                  onChange={(e) => setEditingMessageValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const updatedFolders = folders.map((folder) => {
+                        if (folder.name === selectedFolder) {
+                          const updatedChats = folder.chats.map((chat, i) => {
+                            if (i === index) {
+                              return { ...chat, text: editingMessageValue };
+                            }
+                            return chat;
+                          });
+                          return { ...folder, chats: updatedChats };
+                        }
+                        return folder;
+                      });
+                      setFolders(updatedFolders);
+                      setEditingMessageIndex(null);
+                      setEditingMessageValue('');
+                    }
                   }}
+                  className="form-control"
                 />
-              </div>
-            )}
-            <i
-              className="fas fa-pencil-alt ml-2"
-              style={{ cursor: 'pointer', marginLeft: '10px' }}
-              onClick={() => {
-                setEditingMessageIndex(index);
-                setEditingMessageValue(msg.text);
-              }}
-            ></i>
+              ) : (
+                <div className="message-content" style={{ textAlign: 'left' }}>
+                  <ReactMarkdown
+                    children={msg.text}
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            children={String(children).replace(/\n$/, '')}
+                            style={dark}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          />
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  />
+                </div>
+              )}
+              {msg.sender === 'user' && (
+                <i
+                  className="fas fa-pencil-alt ml-2"
+                  style={{ cursor: 'pointer', marginLeft: '10px' }}
+                  onClick={() => {
+                    setEditingMessageIndex(index);
+                    setEditingMessageValue(msg.text);
+                  }}
+                ></i>
+              )}
           </div>
         )) : <div>No messages yet</div>}
         {console.log('Rendering chat messages:', currentFolderChats)}
