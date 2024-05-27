@@ -21,12 +21,12 @@
 }
 
 .message.user {
-  background-color: #333333;
+  background-color: #1e1e1e;
   color: #ffffff;
 }
 
 .message.assistant {
-  background-color: #444444;
+  background-color: #1e1e1e;
   color: #ffffff;
 }
 
