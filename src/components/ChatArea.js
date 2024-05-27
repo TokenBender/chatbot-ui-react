@@ -65,8 +65,8 @@ function ChatArea() {
     <div className="col-9 d-flex flex-column chat-area">
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
         {currentFolderChats.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender}`}>
-            <div className="message-content">
+          <div key={index} className={`message ${msg.sender}`} style={{ textAlign: 'left' }}>
+            <div className="message-content" style={{ textAlign: 'left' }}>
               {msg.text}
             </div>
           </div>
