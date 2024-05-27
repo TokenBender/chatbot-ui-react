@@ -68,7 +68,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Chatbot UI
+# ChatMaxx Furiousa
 
 This project is a chatbot user interface built with React and Flask. It allows users to interact with a chatbot powered by OpenRouter's API.
 

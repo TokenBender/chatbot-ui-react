@@ -39,7 +39,7 @@ function Header() {
 
   return (
     <nav className="navbar navbar-dark bg-dark fixed-top">
-      <span className="navbar-brand mb-0 h1">ChatMaxx Furiosa</span>
+      <span className="navbar-brand mb-0 h1">ChatMaxx Furiousa</span>
       <div className="navbar-text ml-auto status-text">
         <select value={selectedModel} onChange={handleModelChange} className="form-control">
           {models.map((model, index) => (
