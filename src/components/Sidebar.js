@@ -31,16 +31,15 @@ function Sidebar() {
                   value={renameValue}
                   onChange={(e) => setRenameValue(e.target.value)}
                   className="form-control"
-                />
-                <button className="btn btn-sm btn-success ml-2" onClick={() => {
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
                     const updatedChats = [...chats];
                     updatedChats[index].name = renameValue;
                     setChats(updatedChats);
                     setRenamingChat(null);
                     setRenameValue('');
-                  }}>
-                  Save
-                </button>
+                  }
+                }}
               </>
             ) : (
               <>
@@ -54,17 +53,6 @@ function Sidebar() {
                     setChats(updatedChats);
                   }}>
                     <i className="fas fa-trash-alt"></i>
-                  </button>
-                </div>
-                <div>
-                  <button className="btn btn-sm btn-warning mr-2" onClick={() => setRenamingChat(index)}>
-                    Rename
-                  </button>
-                  <button className="btn btn-sm btn-danger" onClick={() => {
-                    const updatedChats = chats.filter((_, i) => i !== index);
-                    setChats(updatedChats);
-                  }}>
-                    Delete
                   </button>
                 </div>
               </>
