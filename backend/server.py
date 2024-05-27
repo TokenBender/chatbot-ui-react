@@ -4,6 +4,8 @@ import requests
 import os
 import json
 import subprocess
+import threading
+import time
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -49,8 +51,8 @@ def chat():
         print('Error from OpenRouter API:', response.status_code, response.text)
         bot_response = 'Error: No response'
     
-    # Add the bot response to the chat history
-    chat_history.append({"role": "assistant", "content": bot_response})
+    # Add the bot response to the chat history with model name
+    chat_history.append({"role": "assistant", "content": bot_response, "model": MODEL_NAME})
     
     # Save chat history to a JSONL file with the provided chat name
     chat_name = data.get('chat_name', 'default_chat')
@@ -106,5 +108,18 @@ def reload_config():
     MODEL_NAME = os.getenv('MODEL_NAME')
     return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
 
+def autosave_chats():
+    while True:
+        time.sleep(5)  # Save every 5 seconds
+        for chat_name in os.listdir('.'):
+            if chat_name.endswith('.jsonl'):
+                with open(chat_name, 'r') as f:
+                    chat_history = f.readlines()
+                with open(chat_name, 'w') as f:
+                    for message in chat_history:
+                        f.write(message)
+
 if __name__ == '__main__':
+    autosave_thread = threading.Thread(target=autosave_chats, daemon=True)
+    autosave_thread.start()
     app.run(host='0.0.0.0', port=5001)
