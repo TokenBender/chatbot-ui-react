@@ -19,4 +19,20 @@
     display: flex;
     align-items: center;
   }
-  
+  .navbar .form-control {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+.navbar .form-control:focus {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #555555;
+  box-shadow: none;
+}
+
+.navbar .form-control option {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
