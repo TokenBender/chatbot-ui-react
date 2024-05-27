@@ -111,8 +111,10 @@ def reload_config():
 def autosave_chats():
     while True:
         time.sleep(5)  # Save every 5 seconds
+        print('Autosave running...')
         for chat_name in os.listdir('.'):
             if chat_name.endswith('.jsonl'):
+                print(f'Autosaving chat: {chat_name}')
                 with open(chat_name, 'r') as f:
                     chat_history = f.readlines()
                 with open(chat_name, 'w') as f:
