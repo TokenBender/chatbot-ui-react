@@ -122,6 +122,7 @@ def bing_search():
 
     try:
         search_results = response.json()
+        print('Bing Search API response:', search_results)  # Log the response from Bing Search API
         results = [
             {
                 "name": result["name"],
