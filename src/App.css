@@ -1,5 +1,49 @@
 .App {
   text-align: center;
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.container-fluid {
+  background-color: #1e1e1e;
+}
+
+.row.content {
+  background-color: #1e1e1e;
+}
+
+.chat-area {
+  background-color: #1e1e1e;
+}
+
+.chat-messages {
+  background-color: #1e1e1e;
+}
+
+.message.user {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.message.assistant {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+input.form-control {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+button.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
 }
 
 .container-fluid {
