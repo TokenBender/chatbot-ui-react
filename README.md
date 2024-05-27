@@ -68,3 +68,153 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Chatbot UI
+
+This project is a chatbot user interface built with React and Flask. It allows users to interact with a chatbot powered by OpenRouter's API.
+
+## Features
+
+- **Chat Interface**: A user-friendly chat interface to interact with the chatbot.
+- **Model Selection**: Dropdown to select different models from OpenRouter.
+- **Chat History**: Save and load chat history for each session.
+- **Dark Theme**: A dark-themed UI for better user experience.
+- **Local Storage**: Save chat history to local storage every 5 seconds.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- Python (v3.6 or later)
+- Flask
+- OpenRouter API Key
+
+### Installation
+
+1. **Clone the repository**:
+    ```sh
+    git clone <repository-url>
+    cd chatbot-ui
+    ```
+
+2. **Install frontend dependencies**:
+    ```sh
+    cd frontend
+    npm install
+    ```
+
+3. **Install backend dependencies**:
+    ```sh
+    cd backend
+    pip install -r requirements.txt
+    ```
+
+4. **Set up environment variables**:
+    Create a `.env` file in the `backend` directory with the following content:
+    ```env
+    OPENROUTER_API_KEY=your_openrouter_api_key
+    MODEL_NAME=default_model
+    ```
+
+### Running the Application
+
+1. **Start the backend server**:
+    ```sh
+    cd backend
+    python server.py
+    ```
+
+2. **Start the frontend development server**:
+    ```sh
+    cd frontend
+    npm start
+    ```
+
+3. Open your browser and navigate to `http://localhost:3000`.
+
+## Project Structure
+
+- **frontend**: Contains the React application.
+  - `src/components`: React components for the UI.
+  - `src/context`: Context for managing global state.
+  - `src/App.js`: Main application component.
+  - `src/index.js`: Entry point for the React application.
+- **backend**: Contains the Flask server.
+  - `server.py`: Main server file.
+  - `.env`: Environment variables for the backend.
+
+## Available Scripts
+
+In the `frontend` directory, you can run:
+
+- `npm start`: Runs the app in development mode.
+- `npm test`: Launches the test runner.
+- `npm run build`: Builds the app for production.
+
+## API Endpoints
+
+- **POST /chat**: Send a message to the chatbot.
+  - Request body:
+    ```json
+    {
+      "message": "Hello",
+      "history": [],
+      "chat_name": "default_chat"
+    }
+    ```
+  - Response body:
+    ```json
+    {
+      "response": "Hi there!",
+      "history": [
+        {"role": "user", "content": "Hello"},
+        {"role": "assistant", "content": "Hi there!"}
+      ]
+    }
+    ```
+
+- **GET /config**: Get the current model configuration.
+  - Response body:
+    ```json
+    {
+      "model": "default_model",
+      "using_api_key": true
+    }
+    ```
+
+- **GET /models**: Get the list of available models.
+  - Response body:
+    ```json
+    {
+      "models": ["model1", "model2"]
+    }
+    ```
+
+- **POST /update-model**: Update the current model.
+  - Request body:
+    ```json
+    {
+      "model": "new_model"
+    }
+    ```
+  - Response body:
+    ```json
+    {
+      "model": "new_model",
+      "using_api_key": true
+    }
+    ```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any changes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [React](https://reactjs.org/)
+- [Flask](https://flask.palletsprojects.com/)
+- [OpenRouter](https://openrouter.ai/)
