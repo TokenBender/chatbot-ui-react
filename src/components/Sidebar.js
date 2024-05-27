@@ -46,6 +46,20 @@ function Sidebar() {
                   }
                 }}
               />
+                <i
+                  className="fas fa-pencil-alt ml-2"
+                  onClick={() => {
+                    setRenamingChat(index);
+                    setRenameValue(chat.name);
+                  }}
+                ></i>
+                <i
+                  className="fas fa-trash ml-2"
+                  onClick={() => {
+                    const updatedChats = chats.filter((_, i) => i !== index);
+                    setChats(updatedChats);
+                  }}
+                ></i>
               </>
             ) : (
               <>
