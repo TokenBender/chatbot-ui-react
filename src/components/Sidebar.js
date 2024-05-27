@@ -44,17 +44,6 @@ function Sidebar() {
             ) : (
               <>
                 <span>{chat.name}</span>
-                <div>
-                  <button className="btn btn-sm btn-warning mr-2" onClick={() => setRenamingChat(index)}>
-                    <i className="fas fa-pencil-alt"></i>
-                  </button>
-                  <button className="btn btn-sm btn-danger" onClick={() => {
-                    const updatedChats = chats.filter((_, i) => i !== index);
-                    setChats(updatedChats);
-                  }}>
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
-                </div>
               </>
             )}
           </li>
