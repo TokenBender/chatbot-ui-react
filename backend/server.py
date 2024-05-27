@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import os
+import json
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -50,6 +51,11 @@ def chat():
     # Add the bot response to the chat history
     chat_history.append({"role": "assistant", "content": bot_response})
     
+    # Save chat history to a JSONL file
+    with open('chat_history.jsonl', 'a') as f:
+        for message in chat_history:
+            f.write(json.dumps(message) + '\n')
+
     return jsonify({'response': bot_response, 'history': chat_history})
 
 @app.route('/config', methods=['GET'])
