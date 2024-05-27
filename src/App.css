@@ -120,10 +120,14 @@ button.btn-primary:hover {
 
 .message.user {
   justify-content: flex-end;
+  max-width: 60%;
+  margin-left: auto;
 }
 
 .message.bot {
   justify-content: flex-start;
+  max-width: 60%;
+  margin-right: auto;
 }
 
 .message-content {
