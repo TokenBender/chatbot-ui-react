@@ -121,12 +121,12 @@ button.btn-primary:hover {
 
 .message.user {
   justify-content: flex-end;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 .message.bot {
   justify-content: flex-start;
-  margin-right: auto;
+  margin-right: 0;
 }
 
 .message-content {
