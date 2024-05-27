@@ -7,30 +7,50 @@ import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 function ChatArea() {
   const { folders, setFolders, selectedFolder } = useContext(FolderContext);
   const [input, setInput] = useState('');
+  const [editingMessageIndex, setEditingMessageIndex] = useState(null);
+  const [editingMessageValue, setEditingMessageValue] = useState('');
 
   useEffect(() => {
     console.log('Folders:', folders);
     console.log('Selected Folder:', selectedFolder);
   }, [folders, selectedFolder]);
 
-  const sendMessage = () => {
+  const sendMessage = (editedMessageIndex = null) => {
     console.log('Sending message:', input);
     if (input) {
       console.log('Current folders before user message:', folders);
       console.log('Selected folder:', selectedFolder);
-      const updatedFolders = folders.map((folder) => {
-        if (folder.name === selectedFolder) {
-          return {
-            ...folder,
-            chats: [...folder.chats, { text: input, sender: 'user' }],
-          };
-        }
-        return folder;
-      });
+      let updatedFolders;
+      if (editedMessageIndex !== null) {
+        updatedFolders = folders.map((folder) => {
+          if (folder.name === selectedFolder) {
+            const updatedChats = folder.chats.map((chat, index) => {
+              if (index === editedMessageIndex) {
+                return { ...chat, text: input };
+              }
+              return chat;
+            });
+            return { ...folder, chats: updatedChats };
+          }
+          return folder;
+        });
+      } else {
+        updatedFolders = folders.map((folder) => {
+          if (folder.name === selectedFolder) {
+            return {
+              ...folder,
+              chats: [...folder.chats, { text: input, sender: 'user' }],
+            };
+          }
+          return folder;
+        });
+      }
       setFolders(updatedFolders);
       console.log('Updated folders after user message:', updatedFolders);
       console.log('User message:', input);
       setInput('');
+      setEditingMessageIndex(null);
+      setEditingMessageValue('');
 
       const currentFolderChats = updatedFolders.find((folder) => folder.name === selectedFolder)?.chats || [];
       const chatHistory = currentFolderChats.map(chat => ({
@@ -75,29 +95,52 @@ function ChatArea() {
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
         {currentFolderChats.length > 0 ? currentFolderChats.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`} style={{ textAlign: 'left' }}>
-            <div className="message-content" style={{ textAlign: 'left' }}>
-              <ReactMarkdown
-                children={msg.text}
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        children={String(children).replace(/\n$/, '')}
-                        style={dark}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      />
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
+            {editingMessageIndex === index ? (
+              <input
+                type="text"
+                value={editingMessageValue}
+                onChange={(e) => setEditingMessageValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setInput(editingMessageValue);
+                    sendMessage(index);
+                  }
                 }}
+                className="form-control"
               />
-            </div>
+            ) : (
+              <div className="message-content" style={{ textAlign: 'left' }}>
+                <ReactMarkdown
+                  children={msg.text}
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || '');
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          children={String(children).replace(/\n$/, '')}
+                          style={dark}
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        />
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                />
+              </div>
+            )}
+            <i
+              className="fas fa-pencil-alt ml-2"
+              style={{ cursor: 'pointer', marginLeft: '10px' }}
+              onClick={() => {
+                setEditingMessageIndex(index);
+                setEditingMessageValue(msg.text);
+              }}
+            ></i>
           </div>
         )) : <div>No messages yet</div>}
         {console.log('Rendering chat messages:', currentFolderChats)}
