@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FolderContext } from '../context/FolderContext';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -8,7 +8,13 @@ function ChatArea() {
   const { folders, setFolders, selectedFolder } = useContext(FolderContext);
   const [input, setInput] = useState('');
 
+  useEffect(() => {
+    console.log('Folders:', folders);
+    console.log('Selected Folder:', selectedFolder);
+  }, [folders, selectedFolder]);
+
   const sendMessage = () => {
+    console.log('Sending message:', input);
     if (input) {
       console.log('Current folders before user message:', folders);
       console.log('Selected folder:', selectedFolder);
@@ -67,7 +73,7 @@ function ChatArea() {
   return (
     <div className="col-9 d-flex flex-column chat-area">
       <div className="flex-grow-1 bg-white p-3 border-bottom overflow-auto chat-messages">
-        {currentFolderChats.map((msg, index) => (
+        {currentFolderChats.length > 0 ? currentFolderChats.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`} style={{ textAlign: 'left' }}>
             <div className="message-content" style={{ textAlign: 'left' }}>
               <ReactMarkdown
@@ -93,7 +99,7 @@ function ChatArea() {
               />
             </div>
           </div>
-        ))}
+        )) : <div>No messages yet</div>}
         {console.log('Rendering chat messages:', currentFolderChats)}
       </div>
       <div className="p-3 bg-light">
