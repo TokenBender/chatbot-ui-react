@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import requests
 import os
@@ -36,21 +36,19 @@ def chat():
         json={
             "model": MODEL_NAME,
             "messages": chat_history
-        }
+        },
+        stream=True,
     )
     
-    if response.status_code == 200:
-        response_data = response.json()
-        print('OpenRouter API response:', response_data)
-        bot_response = response_data.get('choices', [{}])[0].get('message', {}).get('content', 'Error: No response')
-    else:
-        print('Error from OpenRouter API:', response.status_code, response.text)
-        bot_response = 'Error: No response'
+    def generate():
+        try:
+            for line in response.iter_lines():
+                if line:
+                    yield f"data: {line.decode('utf-8')}\n\n"
+        except Exception as e:
+            print(f"Error streaming response: {e}")
     
-    # Add the bot response to the chat history
-    chat_history.append({"role": "assistant", "content": bot_response})
-    
-    return jsonify({'response': bot_response, 'history': chat_history})
+    return Response(generate(), mimetype='text/event-stream')
 
 @app.route('/config', methods=['GET'])
 def config():

@@ -21,7 +21,6 @@ function ChatArea() {
       setFolders(updatedFolders);
       console.log('Updated folders after user message:', updatedFolders);
       console.log('User message:', input);
-      setInput('');
 
       const currentFolderChats = updatedFolders.find((folder) => folder.name === selectedFolder)?.chats || [];
       const chatHistory = currentFolderChats.map(chat => ({
@@ -37,24 +36,55 @@ function ChatArea() {
         },
         body: JSON.stringify({ message: input, history: chatHistory }),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Assistant response:', data.response);
-          const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
-            if (folder.name === selectedFolder) {
-              return {
-                ...folder,
-                chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
-              };
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.body.getReader();
+      })
+      .then(reader => {
+        const decoder = new TextDecoder();
+        let accumulatedData = '';
+
+        const processText = ({ done, value }) => {
+          if (done) {
+            return;
+          }
+
+          const text = decoder.decode(value);
+          accumulatedData += text;
+
+          const lines = accumulatedData.split('\n');
+          accumulatedData = lines.pop(); // Keep the last incomplete line for the next chunk
+
+          lines.forEach(line => {
+            if (line.trim().startsWith('data: ')) {
+              const jsonString = line.trim().substring(6);
+              try {
+                const parsedData = JSON.parse(jsonString);
+                const assistantMessage = parsedData.choices[0].message.content;
+                const updatedFoldersWithAssistantResponse = folders.map((folder) => {
+                  if (folder.name === selectedFolder) {
+                    return {
+                      ...folder,
+                      chats: [...folder.chats, { text: assistantMessage, sender: 'assistant' }],
+                    };
+                  }
+                  return folder;
+                });
+                setFolders(updatedFoldersWithAssistantResponse);
+              } catch (error) {
+                console.error('Error parsing JSON:', error);
+              }
             }
-            return folder;
           });
-          console.log('Updated folders with assistant response:', updatedFoldersWithAssistantResponse);
-          setFolders(updatedFoldersWithAssistantResponse);
-        })
-        .catch((error) => {
-          console.error('Error fetching assistant response:', error);
-        });
+
+          reader.read().then(processText);
+        };
+
+        reader.read().then(processText);
+      })
+      .catch(error => console.error('Error fetching assistant response:', error));
+
+      setInput('');
     }
   };
 
