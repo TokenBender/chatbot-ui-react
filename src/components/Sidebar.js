@@ -51,6 +51,7 @@ function Sidebar() {
             <div>
               <i
                 className="fas fa-pencil-alt ml-2"
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   setRenamingChat(index);
                   setRenameValue(chat.name);
@@ -58,6 +59,7 @@ function Sidebar() {
               ></i>
               <i
                 className="fas fa-trash ml-2"
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   const updatedChats = chats.filter((_, i) => i !== index);
                   setChats(updatedChats);
