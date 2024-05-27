@@ -104,7 +104,7 @@ function ChatArea() {
                     if (e.key === 'Enter') {
                       const updatedFolders = folders.map((folder) => {
                         if (folder.name === selectedFolder) {
-                          const updatedChats = folder.chats.map((chat, i) => {
+                          const updatedChats = folder.chats.slice(0, index + 1).map((chat, i) => {
                             if (i === index) {
                               return { ...chat, text: editingMessageValue };
                             }

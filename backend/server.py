@@ -54,7 +54,7 @@ def chat():
     
     # Save chat history to a JSONL file with the provided chat name
     chat_name = data.get('chat_name', 'default_chat')
-    with open(f'{chat_name}.jsonl', 'a') as f:
+    with open(f'{chat_name}.jsonl', 'w') as f:
         for message in chat_history:
             f.write(json.dumps(message) + '\n')
 
