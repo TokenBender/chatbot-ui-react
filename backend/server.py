@@ -101,12 +101,25 @@ def update_model():
 
     return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
 
-@app.route('/reload-config', methods=['POST'])
-def reload_config():
-    global MODEL_NAME
-    load_dotenv()  # Reload environment variables
-    MODEL_NAME = os.getenv('MODEL_NAME')
-    return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
+@app.route('/bing-search', methods=['POST'])
+def bing_search():
+    data = request.json
+    query = data.get('query', '')
+    subscription_key = os.getenv('BING_SEARCH_API_KEY')
+    endpoint = "https://api.bing.microsoft.com/v7.0/search"
+    headers = {"Ocp-Apim-Subscription-Key": subscription_key}
+    params = {"q": query, "textDecorations": True, "textFormat": "HTML"}
+    response = requests.get(endpoint, headers=headers, params=params)
+    search_results = response.json()
+    results = [
+        {
+            "name": result["name"],
+            "url": result["url"],
+            "snippet": result["snippet"]
+        }
+        for result in search_results.get("webPages", {}).get("value", [])
+    ]
+    return jsonify({'results': results})
 
 def autosave_chats():
     while True:
