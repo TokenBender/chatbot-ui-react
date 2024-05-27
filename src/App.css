@@ -85,11 +85,11 @@ button.btn-primary:hover {
 }
 
 .bg-light {
-  background-color: #f8f9fa !important;
+  background-color: #1e1e1e !important;
 }
 
 .border-right {
-  border-right: 1px solid #dee2e6 !important;
+  border-right: 1px solid #333333 !important;
 }
 
 .border-bottom {
