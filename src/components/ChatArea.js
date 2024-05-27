@@ -38,7 +38,7 @@ function ChatArea() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input, history: chatHistory }),
+        body: JSON.stringify({ message: input, history: chatHistory, chat_name: selectedFolder }),
       })
         .then((response) => response.json())
         .then((data) => {

@@ -51,8 +51,9 @@ def chat():
     # Add the bot response to the chat history
     chat_history.append({"role": "assistant", "content": bot_response})
     
-    # Save chat history to a JSONL file
-    with open('chat_history.jsonl', 'a') as f:
+    # Save chat history to a JSONL file with the provided chat name
+    chat_name = data.get('chat_name', 'default_chat')
+    with open(f'{chat_name}.jsonl', 'a') as f:
         for message in chat_history:
             f.write(json.dumps(message) + '\n')
 
