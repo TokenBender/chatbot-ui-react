@@ -109,7 +109,12 @@ This project is a chatbot user interface built with React and Flask. It allows u
     pip install -r requirements.txt
     ```
 
-4. **Set up environment variables**:
+4. **Install aider-chat**:
+    ```sh
+    pip install aider-chat
+    ```
+
+5. **Set up environment variables**:
     Create a `.env` file in the `backend` directory with the following content:
     ```env
     OPENROUTER_API_KEY=your_openrouter_api_key
