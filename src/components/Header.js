@@ -13,7 +13,7 @@ function Header() {
 
   return (
     <nav className="navbar navbar-dark bg-dark fixed-top">
-      <span className="navbar-brand mb-0 h1">ChatKit</span>
+      <span className="navbar-brand mb-0 h1">ChatMaxx Furiosa</span>
       <div className="navbar-text ml-auto status-text">
         {modelInfo.model} {modelInfo.using_api_key ? <span className="api-key-text">Using API Key</span> : <span className="api-key-text">No API Key</span>}
       </div>
