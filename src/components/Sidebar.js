@@ -46,7 +46,7 @@ function Sidebar() {
                 }}
               />
             ) : (
-              <span>{chat.name}</span>
+              <span className="chat-name">{chat.name}</span>
             )}
             <div>
               <i
