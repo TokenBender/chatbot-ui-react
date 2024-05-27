@@ -115,7 +115,8 @@ button.btn-primary:hover {
 
 .message {
   display: flex;
-  margin-bottom: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .message.user {
