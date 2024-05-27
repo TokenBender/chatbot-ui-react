@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react';
 import { FolderContext } from '../context/FolderContext';
 
 function Sidebar() {
+  // Feature: Selecting a Folder
   const { folders, setFolders, selectedFolder, setSelectedFolder } = useContext(FolderContext);
   const [newFolder, setNewFolder] = useState('');
   const [renamingFolder, setRenamingFolder] = useState(null);
   const [renameValue, setRenameValue] = useState('');
 
+  // Feature: Adding a New Folder
   const addFolder = () => {
     if (newFolder) {
       setFolders([...folders, { name: newFolder, chats: [] }]);
@@ -14,6 +16,7 @@ function Sidebar() {
     }
   };
 
+  // Feature: Renaming an Existing Folder
   const renameFolder = (index) => {
     const updatedFolders = [...folders];
     updatedFolders[index].name = renameValue;
@@ -22,6 +25,7 @@ function Sidebar() {
     setRenameValue('');
   };
 
+  // Feature: Deleting a Folder
   const deleteFolder = (index) => {
     const updatedFolders = folders.filter((_, i) => i !== index);
     setFolders(updatedFolders);
