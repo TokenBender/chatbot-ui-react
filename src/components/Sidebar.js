@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
+const SAVE_INTERVAL_MS = 5000; // Save every 5 seconds
+
+function saveChatsToLocalStorage(chats) {
+  localStorage.setItem('chats', JSON.stringify(chats));
+}
+
 function Sidebar() {
   const [chats, setChats] = useState([]);
   const [renamingChat, setRenamingChat] = useState(null);
@@ -19,6 +25,14 @@ function Sidebar() {
 
   useEffect(() => {
     console.log('Chats state:', chats);
+  }, [chats]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      saveChatsToLocalStorage(chats);
+    }, SAVE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
   }, [chats]);
 
   return (
