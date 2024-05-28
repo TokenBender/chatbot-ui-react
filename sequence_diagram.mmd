@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant ChatArea
+    participant BingSearch
+    participant Server
+    participant Summarize
+    participant Search
+
+    User->>ChatArea: Enters /web query
+    ChatArea->>BingSearch: Detects /web and sends POST request to /bing-search
+    BingSearch->>Server: POST /bing-search
+    Server->>Search: Calls bing_search function
+    Search->>Bing API: Sends search request
+    Bing API->>Search: Returns search results
+    Search->>Summarize: Summarizes search results
+    Summarize->>Search: Returns summarized results
+    Search->>Server: Returns summarized search results
+    Server->>BingSearch: Returns summarized search results
+    BingSearch->>ChatArea: Updates chat with summarized search results
+    ChatArea->>User: Displays summarized search results
