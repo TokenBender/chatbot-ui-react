@@ -120,6 +120,7 @@ function ChatArea() {
             setFolders(updatedFoldersWithAssistantResponse);
           }
           setInput('');  // Clear the input field after processing
+          setInput('');  // Clear the input field after processing
         })
         .catch((error) => {
           console.error('Error fetching assistant response:', error);
