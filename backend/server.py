@@ -136,10 +136,11 @@ def bing_search_route():
     try:
         data = request.json
         logger.debug('Received search request')
-        search_results = bing_search(data).json
+        search_results = bing_search(data)
         logger.debug('Search results received')
         summaries = [result["summary"] for result in search_results["results"]]
         summarized_content = "\n".join(summaries)
+        search_results = search_results["results"]
         
         # Pass the summarized content to the assistant
         chat_history = data.get('history', [])
