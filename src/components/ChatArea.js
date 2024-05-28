@@ -105,6 +105,7 @@ function ChatArea() {
                 });
             } else {
               console.error('Error: data.results is not an array or is undefined:', data.results);
+              alert('An error occurred while fetching search results. Please try again later.');
             }
           } else {
             updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
