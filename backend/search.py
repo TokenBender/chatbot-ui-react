@@ -1,6 +1,7 @@
 import os
 import requests
 from flask import jsonify
+from summarize import fetch_content_from_url, summarize_document
 
 def bing_search(data):
     query = data.get('query', '')
@@ -33,4 +34,23 @@ def bing_search(data):
     except (ValueError, KeyError) as e:
         return jsonify({'error': f'Error parsing search results: {str(e)}'}), 500
 
-    return jsonify({'results': results})
+    summaries = []
+    for result in results:
+        try:
+            content = fetch_content_from_url(result["url"])
+            summary = summarize_document(content)
+            summaries.append({
+                "name": result["name"],
+                "url": result["url"],
+                "snippet": result["snippet"],
+                "summary": summary
+            })
+        except Exception as e:
+            summaries.append({
+                "name": result["name"],
+                "url": result["url"],
+                "snippet": result["snippet"],
+                "summary": f"Error summarizing content: {str(e)}"
+            })
+
+    return jsonify({'results': summaries})

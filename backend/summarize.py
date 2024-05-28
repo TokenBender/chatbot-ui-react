@@ -32,9 +32,8 @@ def summarize_document(document):
     most_central_sentence_indices = np.argsort(-centrality_scores)
     
     # Print the 5 sentences with the highest scores
-    print("\n\nSummary:")
-    for idx in most_central_sentence_indices[0:5]:
-        print(sentences[idx].strip())
+    summary = "\n".join([sentences[idx].strip() for idx in most_central_sentence_indices[0:5]])
+    return summary
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

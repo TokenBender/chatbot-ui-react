@@ -105,7 +105,33 @@ def update_model():
 @app.route('/bing-search', methods=['POST'])
 def bing_search_route():
     data = request.json
-    return bing_search(data)
+    search_results = bing_search(data).json
+    summaries = [result["summary"] for result in search_results["results"]]
+    summarized_content = "\n".join(summaries)
+    
+    # Pass the summarized content to the assistant
+    chat_history = data.get('history', [])
+    chat_history.append({"role": "user", "content": summarized_content})
+    
+    response = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": MODEL_NAME.replace('openrouter/', ''),
+            "messages": chat_history
+        }
+    )
+    
+    if response.status_code == 200:
+        response_data = response.json()
+        bot_response = response_data.get('choices', [{}])[0].get('message', {}).get('content', 'Error: No response')
+    else:
+        bot_response = 'Error: No response'
+    
+    return jsonify({'response': bot_response, 'history': chat_history})
 
 def autosave_chats():
     while True:
