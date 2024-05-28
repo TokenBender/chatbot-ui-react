@@ -14,7 +14,6 @@ function BingSearch() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Search results:', data.results);
         setResults(data.results);
       })
       .catch((error) => {

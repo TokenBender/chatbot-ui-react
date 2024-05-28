@@ -44,10 +44,6 @@ def chat():
         chat_history.append({"role": "user", "content": user_message})
     
     logger.debug('Sending chat history to OpenRouter API')
-    logger.debug(f'Payload: {json.dumps({"model": MODEL_NAME.replace("openrouter/", ""), "messages": chat_history}, indent=2)}')
-    if DEBUG_MODE:
-        logger.debug(f'Chat history: {chat_history}')
-    logger.debug('Sending summarized content to OpenRouter API')
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
@@ -64,14 +60,8 @@ def chat():
         response_data = response.json()
         logger.debug('Received response from OpenRouter API')
         logger.debug(f'Response: {response_data}')
-        if DEBUG_MODE:
-            logger.debug(f'OpenRouter API response: {response_data}')
-        logger.debug('Received response from OpenRouter API')
-        if DEBUG_MODE:
-            logger.debug(f'OpenRouter API response: {response_data}')
         bot_response = response_data.get('choices', [{}])[0].get('message', {}).get('content', 'Error: No response')
     else:
-        logger.error(f'Error from OpenRouter API: {response.status_code} {response.text}')
         logger.error(f'Error from OpenRouter API: {response.status_code} {response.text}')
         bot_response = 'Error: No response'
     
@@ -129,12 +119,8 @@ def update_model():
 def bing_search_route():
     data = request.json
     logger.debug('Received search request')
-    logger.debug(f'Payload: {json.dumps(data, indent=2)}')
     search_results = bing_search(data).json
     logger.debug('Search results received')
-    logger.debug(f'Search results: {search_results}')
-    if DEBUG_MODE:
-        logger.debug(f'Search results: {search_results}')
     summaries = [result["summary"] for result in search_results["results"]]
     summarized_content = "\n".join(summaries)
     

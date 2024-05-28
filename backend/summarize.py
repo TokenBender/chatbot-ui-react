@@ -23,7 +23,6 @@ def summarize_document(document):
     
     # Split the document into sentences
     sentences = nltk.sent_tokenize(document)
-    logger.debug(f'Number of sentences: {len(sentences)}')
     
     # Compute the sentence embeddings
     embeddings = model.encode(sentences, convert_to_tensor=True)
@@ -49,4 +48,3 @@ if __name__ == "__main__":
     url = sys.argv[1]
     document = fetch_content_from_url(url)
     summary = summarize_document(document)
-    logger.debug(f'Summary: {summary}')

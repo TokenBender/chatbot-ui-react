@@ -11,15 +11,10 @@ function ChatArea() {
   const [editingMessageValue, setEditingMessageValue] = useState('');
 
   useEffect(() => {
-    console.log('Folders:', folders);
-    console.log('Selected Folder:', selectedFolder);
   }, [folders, selectedFolder]);
 
   const sendMessage = async (editedMessageIndex = null) => {
-    console.log('Sending message:', input);
     if (input) {
-      console.log('Current folders before user message:', folders);
-      console.log('Selected folder:', selectedFolder);
       let updatedFolders;
       if (editedMessageIndex !== null) {
         updatedFolders = folders.map((folder) => {
@@ -46,8 +41,6 @@ function ChatArea() {
         });
       }
       setFolders(updatedFolders);
-      console.log('Updated folders after user message:', updatedFolders);
-      console.log('User message:', input);
       setInput('');
       setEditingMessageIndex(null);
       setEditingMessageValue('');
@@ -109,7 +102,6 @@ function ChatArea() {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log('Assistant response:', data.response);
             const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
               if (folder.name === selectedFolder) {
                 return {
@@ -119,7 +111,6 @@ function ChatArea() {
               }
               return folder;
             });
-            console.log('Updated folders with assistant response:', updatedFoldersWithAssistantResponse);
             setFolders(updatedFoldersWithAssistantResponse);
           })
           .catch((error) => {
@@ -161,7 +152,6 @@ function ChatArea() {
   };
 
   const currentFolderChats = folders.find((folder) => folder.name === selectedFolder)?.chats || [];
-  console.log('Current folder chats:', currentFolderChats);
 
   return (
     <div className="col-9 d-flex flex-column chat-area">
@@ -263,7 +253,6 @@ function ChatArea() {
               )}
           </div>
         )) : <div>No messages yet</div>}
-        {console.log('Rendering chat messages:', currentFolderChats)}
       </div>
       <div className="p-3 bg-light">
         <div className="input-group">
