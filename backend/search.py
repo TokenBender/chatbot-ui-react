@@ -57,6 +57,9 @@ def bing_search(data):
         except requests.exceptions.RequestException as e:
             logger.error(f'Error fetching content from {result["url"]}: {str(e)}')
             continue
+        except requests.exceptions.Timeout as e:
+            logger.error(f'Timeout fetching content from {result["url"]}: {str(e)}')
+            continue
         except Exception as e:
             summaries.append({
                 "name": result["name"],

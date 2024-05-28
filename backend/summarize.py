@@ -13,7 +13,7 @@ DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 import sys
 
 def fetch_content_from_url(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=1)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
     return soup.get_text()
