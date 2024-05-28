@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+from backend.search import bing_search
 import os
 import json
 import subprocess
@@ -102,39 +103,9 @@ def update_model():
     return jsonify({'model': MODEL_NAME, 'using_api_key': bool(OPENROUTER_API_KEY)})
 
 @app.route('/bing-search', methods=['POST'])
-def bing_search():
+def bing_search_route():
     data = request.json
-    query = data.get('query', '')
-    subscription_key = os.getenv('BING_SEARCH_API_KEY')
-
-    if not subscription_key:
-        return jsonify({'error': 'Bing Search API key is missing'}), 500
-
-    endpoint = "https://api.bing.microsoft.com/v7.0/search"
-    headers = {"Ocp-Apim-Subscription-Key": subscription_key}
-    params = {"q": query, "textDecorations": True, "textFormat": "HTML"}
-
-    try:
-        response = requests.get(endpoint, headers=headers, params=params)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        return jsonify({'error': f'Error fetching search results: {str(e)}'}), 500
-
-    try:
-        search_results = response.json()
-        print('Bing Search API response:', search_results)  # Log the response from Bing Search API
-        results = [
-            {
-                "name": result["name"],
-                "url": result["url"],
-                "snippet": result["snippet"]
-            }
-            for result in search_results.get("webPages", {}).get("value", [])
-        ]
-    except (ValueError, KeyError) as e:
-        return jsonify({'error': f'Error parsing search results: {str(e)}'}), 500
-
-    return jsonify({'results': results})
+    return bing_search(data)
 
 def autosave_chats():
     while True:
