@@ -18,11 +18,14 @@ def bing_search(data):
         response = requests.get(endpoint, headers=headers, params=params)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
+        logger.error(f'Error fetching search results: {str(e)}')
         return jsonify({'error': f'Error fetching search results: {str(e)}'}), 500
 
     try:
         search_results = response.json()
-        print('Bing Search API response:', search_results)  # Log the response from Bing Search API
+        logger.debug('Received response from Bing Search API')
+        if DEBUG_MODE:
+            logger.debug(f'Bing Search API response: {search_results}')
         results = [
             {
                 "name": result["name"],
@@ -32,6 +35,7 @@ def bing_search(data):
             for result in search_results.get("webPages", {}).get("value", [])
         ]
     except (ValueError, KeyError) as e:
+        logger.error(f'Error parsing search results: {str(e)}')
         return jsonify({'error': f'Error parsing search results: {str(e)}'}), 500
 
     summaries = []
