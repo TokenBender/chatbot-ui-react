@@ -14,7 +14,12 @@ function BingSearch() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setResults(data.results);
+        if (Array.isArray(data.results)) {
+          setResults(data.results);
+        } else {
+          console.error('Unexpected response format:', data);
+          alert('An error occurred while fetching search results. Please try again later.');
+        }
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
