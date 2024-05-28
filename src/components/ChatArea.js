@@ -63,9 +63,11 @@ function ChatArea() {
           });
           const searchData = await searchResponse.json();
           const summarizedContent = Array.isArray(searchData.results) ? searchData.results.map(result => result.summary).join('\n') : '';
+          console.log('Summarized content:', summarizedContent);
           if (summarizedContent) {
             chatHistory.push({ role: 'assistant', content: summarizedContent });
 
+            console.log('Sending summarized content to assistant:', summarizedContent);
             const assistantResponse = await fetch('http://127.0.0.1:5001/chat', {
               method: 'POST',
               headers: {
@@ -78,6 +80,7 @@ function ChatArea() {
               }),
             });
             const assistantData = await assistantResponse.json();
+            console.log('Assistant response received:', assistantData.response);
             const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
               if (folder.name === selectedFolder) {
                 return {
