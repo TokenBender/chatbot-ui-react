@@ -53,47 +53,31 @@ function ChatArea() {
 
       if (input.startsWith('/web')) {
         const query = input.replace('/web', '').trim();
-        try {
-          const searchResponse = await fetch('http://127.0.0.1:5001/bing-search', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query }),
-          });
-          const searchData = await searchResponse.json();
-          const summarizedContent = Array.isArray(searchData.results) ? searchData.results.map(result => result.summary).join('\n') : '';
-          if (summarizedContent) {
-            const assistantResponse = await fetch('http://127.0.0.1:5001/chat', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                message: `Answer the following user query using the provided web result summary\n User query: ${query} \n Web Result Summary: ${summarizedContent}`,
-                history: chatHistory,
-                chat_name: selectedFolder
-              }),
-            });
-            const assistantData = await assistantResponse.json();
+        fetch('http://127.0.0.1:5001/bing-search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
             const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
               if (folder.name === selectedFolder) {
                 return {
                   ...folder,
-                  chats: [...folder.chats, { text: assistantData.response, sender: 'assistant' }],
+                  chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
                 };
               }
               return folder;
             });
             setFolders(updatedFoldersWithAssistantResponse);
             setInput('');  // Clear the input field after processing
-          } else {
-            console.error('Summarized content is empty. Skipping assistant response.');
-          }
-        } catch (error) {
-          console.error('Error fetching search or assistant response:', error);
-          alert('An error occurred while fetching search or assistant response. Please try again later.');
-        }
+          })
+          .catch((error) => {
+            console.error('Error fetching assistant response:', error);
+            alert('An error occurred while fetching assistant response. Please try again later.');
+          });
       } else {
         // Make a request to the backend server
         fetch('http://127.0.0.1:5001/chat', {
