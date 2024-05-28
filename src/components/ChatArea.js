@@ -66,7 +66,7 @@ function ChatArea() {
         .then((data) => {
           let updatedFoldersWithAssistantResponse;
           if (input.startsWith('/web')) {
-            if (data.results && Array.isArray(data.results)) {
+            if (data && data.results && Array.isArray(data.results)) {
               const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
               updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
                 if (folder.name === selectedFolder) {
