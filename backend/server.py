@@ -8,6 +8,13 @@ import subprocess
 import threading
 import time
 from dotenv import load_dotenv
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 
 # Load environment variables from .env file
 load_dotenv()
@@ -31,7 +38,10 @@ def chat():
         # Add the user message to the chat history
         chat_history.append({"role": "user", "content": user_message})
     
-    print('Sending chat history to OpenRouter API:', chat_history)
+    logger.debug('Sending chat history to OpenRouter API')
+    if DEBUG_MODE:
+        logger.debug(f'Chat history: {chat_history}')
+    logger.debug('Sending summarized content to OpenRouter API')
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
@@ -46,10 +56,16 @@ def chat():
     
     if response.status_code == 200:
         response_data = response.json()
-        print('OpenRouter API response:', response_data)
+        logger.debug('Received response from OpenRouter API')
+        if DEBUG_MODE:
+            logger.debug(f'OpenRouter API response: {response_data}')
+        logger.debug('Received response from OpenRouter API')
+        if DEBUG_MODE:
+            logger.debug(f'OpenRouter API response: {response_data}')
         bot_response = response_data.get('choices', [{}])[0].get('message', {}).get('content', 'Error: No response')
     else:
-        print('Error from OpenRouter API:', response.status_code, response.text)
+        logger.error(f'Error from OpenRouter API: {response.status_code} {response.text}')
+        logger.error(f'Error from OpenRouter API: {response.status_code} {response.text}')
         bot_response = 'Error: No response'
     
     # Add the bot response to the chat history with model name
@@ -105,7 +121,11 @@ def update_model():
 @app.route('/bing-search', methods=['POST'])
 def bing_search_route():
     data = request.json
+    logger.debug('Received search request')
     search_results = bing_search(data).json
+    logger.debug('Search results received')
+    if DEBUG_MODE:
+        logger.debug(f'Search results: {search_results}')
     summaries = [result["summary"] for result in search_results["results"]]
     summarized_content = "\n".join(summaries)
     
@@ -136,10 +156,9 @@ def bing_search_route():
 def autosave_chats():
     while True:
         time.sleep(5)  # Save every 5 seconds
-        print('Autosave running...')
         for chat_name in os.listdir('.'):
-            if chat_name.endswith('.jsonl'):
-                print(f'Autosaving chat: {chat_name}')
+            if chat_name.endswith('.jsonl') and DEBUG_MODE:
+                logger.debug(f'Autosaving chat: {chat_name}')
                 with open(chat_name, 'r') as f:
                     chat_history = f.readlines()
                 with open(chat_name, 'w') as f:
