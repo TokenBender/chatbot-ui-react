@@ -66,42 +66,46 @@ function ChatArea() {
         .then((data) => {
           let updatedFoldersWithAssistantResponse;
           if (input.startsWith('/web')) {
-            const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
-            updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
-              if (folder.name === selectedFolder) {
-                return {
-                  ...folder,
-                  chats: [...folder.chats, { text: searchResults, sender: 'assistant' }],
-                };
-              }
-              return folder;
-            });
-            setFolders(updatedFoldersWithAssistantResponse);
-            // Send the search results to the assistant
-            const updatedChatHistory = [...chatHistory, { role: 'assistant', content: searchResults }];
-            fetch('http://127.0.0.1:5001/chat', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ message: searchResults, history: updatedChatHistory, chat_name: selectedFolder }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                const finalUpdatedFoldersWithAssistantResponse = updatedFoldersWithAssistantResponse.map((folder) => {
-                  if (folder.name === selectedFolder) {
-                    return {
-                      ...folder,
-                      chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
-                    };
-                  }
-                  return folder;
-                });
-                setFolders(finalUpdatedFoldersWithAssistantResponse);
-              })
-              .catch((error) => {
-                console.error('Error fetching assistant response:', error);
+            if (Array.isArray(data.results)) {
+              const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
+              updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
+                if (folder.name === selectedFolder) {
+                  return {
+                    ...folder,
+                    chats: [...folder.chats, { text: searchResults, sender: 'assistant' }],
+                  };
+                }
+                return folder;
               });
+              setFolders(updatedFoldersWithAssistantResponse);
+              // Send the search results to the assistant
+              const updatedChatHistory = [...chatHistory, { role: 'assistant', content: searchResults }];
+              fetch('http://127.0.0.1:5001/chat', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: searchResults, history: updatedChatHistory, chat_name: selectedFolder }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  const finalUpdatedFoldersWithAssistantResponse = updatedFoldersWithAssistantResponse.map((folder) => {
+                    if (folder.name === selectedFolder) {
+                      return {
+                        ...folder,
+                        chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
+                      };
+                    }
+                    return folder;
+                  });
+                  setFolders(finalUpdatedFoldersWithAssistantResponse);
+                })
+                .catch((error) => {
+                  console.error('Error fetching assistant response:', error);
+                });
+            } else {
+              console.error('Error: data.results is not an array:', data.results);
+            }
           } else {
             updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
               if (folder.name === selectedFolder) {
