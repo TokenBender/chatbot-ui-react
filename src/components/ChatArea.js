@@ -62,7 +62,7 @@ function ChatArea() {
             body: JSON.stringify({ query }),
           });
           const searchData = await searchResponse.json();
-          const summarizedContent = searchData.results.map(result => result.summary).join('\n');
+          const summarizedContent = Array.isArray(searchData.results) ? searchData.results.map(result => result.summary).join('\n') : '';
           chatHistory.push({ role: 'user', content: summarizedContent });
 
           const assistantResponse = await fetch('http://127.0.0.1:5001/chat', {
