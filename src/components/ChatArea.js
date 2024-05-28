@@ -90,6 +90,7 @@ function ChatArea() {
           setInput('');  // Clear the input field after processing
         } catch (error) {
           console.error('Error fetching search or assistant response:', error);
+          alert('An error occurred while fetching search or assistant response. Please try again later.');
         }
       } else {
         // Make a request to the backend server

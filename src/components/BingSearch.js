@@ -18,6 +18,7 @@ function BingSearch() {
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
+        alert('An error occurred while fetching search results. Please try again later.');
       });
   };
 
