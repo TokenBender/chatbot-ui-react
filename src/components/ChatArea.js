@@ -55,6 +55,85 @@ function ChatArea() {
       const endpoint = input.startsWith('/web') ? 'bing-search' : 'chat';
       const body = input.startsWith('/web') ? { query } : { message: input, history: chatHistory, chat_name: selectedFolder };
 
+      if (input.startsWith('/web')) {
+        console.log('Sending request to endpoint:', endpoint);
+        fetch(`http://127.0.0.1:5001/${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Received response from endpoint:', data);
+            if (data?.results && Array.isArray(data.results)) {
+              console.log('Processing search results:', data.results);
+              const searchSummary = data.results.map(result => result.summary).join('\n');
+              const assistantQuery = `Answer the user query using the provided web search summary\nUser: ${query}\nSearch Summary: ${searchSummary}`;
+              const updatedChatHistory = [...chatHistory, { role: 'user', content: query }];
+              console.log('Sending search summary to assistant');
+              fetch('http://127.0.0.1:5001/chat', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: assistantQuery, history: updatedChatHistory, chat_name: selectedFolder }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  const finalUpdatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
+                    if (folder.name === selectedFolder) {
+                      return {
+                        ...folder,
+                        chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
+                      };
+                    }
+                    return folder;
+                  });
+                  setFolders(finalUpdatedFoldersWithAssistantResponse);
+                })
+                .catch((error) => {
+                  console.error('Error fetching assistant response:', error);
+                });
+            } else {
+              console.error('Error: data.results is not an array or is undefined:', data.results);
+              alert('An error occurred while fetching search results. Please try again later.');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching assistant response:', error);
+            alert('An error occurred while fetching assistant response. Please try again later.');
+          });
+      } else {
+        console.log('Sending request to endpoint:', endpoint);
+        fetch(`http://127.0.0.1:5001/${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Received response from endpoint:', data);
+            let updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
+              if (folder.name === selectedFolder) {
+                return {
+                  ...folder,
+                  chats: [...folder.chats, { text: data.response, sender: 'assistant' }],
+                };
+              }
+              return folder;
+            });
+            setFolders(updatedFoldersWithAssistantResponse);
+          })
+          .catch((error) => {
+            console.error('Error fetching assistant response:', error);
+            alert('An error occurred while fetching assistant response. Please try again later.');
+          });
+      }
+
       console.log('Sending request to endpoint:', endpoint);
       fetch(`http://127.0.0.1:5001/${endpoint}`, {
         method: 'POST',
