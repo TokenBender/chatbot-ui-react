@@ -138,11 +138,7 @@ def bing_search_route():
         logger.debug('Received search request')
         search_results = bing_search(data)
         logger.debug('Search results received')
-        summaries = [result["summary"] for result in search_results["results"]]
-        summarized_content = "\n".join(summaries)
-        search_results = search_results["results"]
-
-        return jsonify({'results': search_results}), 200
+        return search_results, 200
     except Exception as e:
         logger.error(f'Error in /bing-search endpoint: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the search request'}), 500

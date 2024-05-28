@@ -63,7 +63,7 @@ def bing_search(data):
                     "summary": f"Error summarizing content: {str(e)}"
                 })
 
-        return jsonify({'results': summaries}), 200
+        return {'results': summaries}
     except Exception as e:
         logger.error(f'Error in bing_search function: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the search request'}), 500
