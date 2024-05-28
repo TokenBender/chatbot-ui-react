@@ -21,6 +21,7 @@ def bing_search(data):
         headers = {"Ocp-Apim-Subscription-Key": subscription_key}
         params = {"q": query, "textDecorations": True, "textFormat": "HTML"}
 
+        logger.debug('Sending request to Bing Search API');
         try:
             response = requests.get(endpoint, headers=headers, params=params)
             response.raise_for_status()
@@ -29,7 +30,7 @@ def bing_search(data):
 
         try:
             search_results = response.json()
-            logger.debug('Received response from Bing Search API')
+            logger.debug('Received response from Bing Search API');
             results = []
             for result in search_results.get("webPages", {}).get("value", [])[:4]:
                 results.append({
@@ -40,6 +41,7 @@ def bing_search(data):
         except (ValueError, KeyError) as e:
             return jsonify({'error': f'Error parsing search results: {str(e)}'}), 500
 
+        logger.debug('Processing search results');
         summaries = []
         for result in results:
             try:
@@ -63,6 +65,7 @@ def bing_search(data):
                     "summary": f"Error summarizing content: {str(e)}"
                 })
 
+        logger.debug('Returning summarized search results');
         return {'results': summaries}
     except Exception as e:
         logger.error(f'Error in bing_search function: {str(e)}')

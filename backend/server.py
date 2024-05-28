@@ -136,7 +136,9 @@ def bing_search_route():
     try:
         data = request.json
         logger.debug('Received search request')
+        logger.debug('Calling bing_search function');
         search_results = bing_search(data)
+        logger.debug('Received search results from bing_search function');
         logger.debug('Search results received')
         return search_results, 200
     except Exception as e:

@@ -55,6 +55,7 @@ function ChatArea() {
       const endpoint = input.startsWith('/web') ? 'bing-search' : 'chat';
       const body = input.startsWith('/web') ? { query } : { message: input, history: chatHistory, chat_name: selectedFolder };
 
+      console.log('Sending request to endpoint:', endpoint);
       fetch(`http://127.0.0.1:5001/${endpoint}`, {
         method: 'POST',
         headers: {
@@ -64,9 +65,11 @@ function ChatArea() {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log('Received response from endpoint:', data);
           let updatedFoldersWithAssistantResponse;
           if (input.startsWith('/web')) {
             if (data?.results && Array.isArray(data.results)) {
+              console.log('Processing search results:', data.results);
               const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
               updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
                 if (folder.name === selectedFolder) {
@@ -80,6 +83,7 @@ function ChatArea() {
               setFolders(updatedFoldersWithAssistantResponse);
               // Send the search results to the assistant
               const updatedChatHistory = [...chatHistory, { role: 'assistant', content: searchResults }];
+              console.log('Sending search results to assistant');
               fetch('http://127.0.0.1:5001/chat', {
                 method: 'POST',
                 headers: {
