@@ -47,8 +47,8 @@ def summarize_document(document):
         # We argsort so that the first element is the sentence with the highest score
         most_central_sentence_indices = np.argsort(-centrality_scores)
         
-        # Print the 5 sentences with the highest scores
-        summary = "\n".join([sentences[idx].strip() for idx in most_central_sentence_indices[0:5]])
+        # Return the 5 sentences with the highest scores
+        summary = "\n".join([sentences[idx].strip() for idx in most_central_sentence_indices[:5]])
         return summary
     except Exception as e:
         logger.error(f'Error summarizing document: {str(e)}')
