@@ -13,6 +13,11 @@ import logging
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+file_handler = logging.FileHandler('backend.log')
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 
@@ -39,6 +44,7 @@ def chat():
         chat_history.append({"role": "user", "content": user_message})
     
     logger.debug('Sending chat history to OpenRouter API')
+    logger.debug(f'Payload: {json.dumps({"model": MODEL_NAME.replace("openrouter/", ""), "messages": chat_history}, indent=2)}')
     if DEBUG_MODE:
         logger.debug(f'Chat history: {chat_history}')
     logger.debug('Sending summarized content to OpenRouter API')
@@ -57,6 +63,7 @@ def chat():
     if response.status_code == 200:
         response_data = response.json()
         logger.debug('Received response from OpenRouter API')
+        logger.debug(f'Response: {response_data}')
         if DEBUG_MODE:
             logger.debug(f'OpenRouter API response: {response_data}')
         logger.debug('Received response from OpenRouter API')
@@ -122,8 +129,10 @@ def update_model():
 def bing_search_route():
     data = request.json
     logger.debug('Received search request')
+    logger.debug(f'Payload: {json.dumps(data, indent=2)}')
     search_results = bing_search(data).json
     logger.debug('Search results received')
+    logger.debug(f'Search results: {search_results}')
     if DEBUG_MODE:
         logger.debug(f'Search results: {search_results}')
     summaries = [result["summary"] for result in search_results["results"]]

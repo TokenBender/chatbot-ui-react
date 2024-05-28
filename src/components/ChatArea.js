@@ -90,6 +90,7 @@ function ChatArea() {
             return folder;
           });
           setFolders(updatedFoldersWithAssistantResponse);
+          setInput('');  // Clear the input field after processing
         } catch (error) {
           console.error('Error fetching search or assistant response:', error);
         }
