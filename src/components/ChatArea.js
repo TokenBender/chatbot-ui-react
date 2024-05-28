@@ -66,7 +66,7 @@ function ChatArea() {
         .then((data) => {
           let updatedFoldersWithAssistantResponse;
           if (input.startsWith('/web')) {
-            if (Array.isArray(data.results)) {
+            if (data.results && Array.isArray(data.results)) {
               const searchResults = data.results.map(result => `${result.name}: ${result.url}`).join('\n');
               updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
                 if (folder.name === selectedFolder) {
@@ -104,7 +104,7 @@ function ChatArea() {
                   console.error('Error fetching assistant response:', error);
                 });
             } else {
-              console.error('Error: data.results is not an array:', data.results);
+              console.error('Error: data.results is not an array or is undefined:', data.results);
             }
           } else {
             updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {
