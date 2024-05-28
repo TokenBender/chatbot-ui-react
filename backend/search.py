@@ -2,6 +2,12 @@ import os
 import requests
 from flask import jsonify
 from summarize import fetch_content_from_url, summarize_document
+import logging
+import os
+
+# Set up logging
+logger = logging.getLogger(__name__)
+DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 
 def bing_search(data):
     query = data.get('query', '')

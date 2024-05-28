@@ -4,6 +4,12 @@ from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 from LexRank import degree_centrality_scores
+import logging
+import os
+
+# Set up logging
+logger = logging.getLogger(__name__)
+DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
 import sys
 
 def fetch_content_from_url(url):
