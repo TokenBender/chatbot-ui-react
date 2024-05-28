@@ -14,7 +14,6 @@ function BingSearch() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setResults(data.results);
         console.log('Search results:', data.results);
         setResults(data.results);
       })
@@ -32,16 +31,6 @@ function BingSearch() {
         placeholder="Search the web..."
       />
       <button onClick={handleSearch}>Search</button>
-      <div className="search-results">
-        {results.map((result, index) => (
-          <div key={index} className="search-result">
-            <a href={result.url} target="_blank" rel="noopener noreferrer">
-              <h3>{result.name}</h3>
-            </a>
-            <p>{result.snippet}</p>
-          </div>
-        ))}
-      </div>
       <div className="search-results">
         {results.map((result, index) => (
           <div key={index} className="search-result">
