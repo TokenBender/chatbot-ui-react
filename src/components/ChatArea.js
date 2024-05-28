@@ -77,7 +77,11 @@ function ChatArea() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: summarizedContent, history: chatHistory, chat_name: selectedFolder }),
+            body: JSON.stringify({
+              message: `Answer the following user query using the provided web result summary\n User query: ${query} \n Web Result Summary: ${summarizedContent}`,
+              history: chatHistory,
+              chat_name: selectedFolder
+            }),
           });
           const assistantData = await assistantResponse.json();
           const updatedFoldersWithAssistantResponse = updatedFolders.map((folder) => {

@@ -140,7 +140,9 @@ def bing_search_route():
     
     # Pass the summarized content to the assistant
     chat_history = data.get('history', [])
-    chat_history.append({"role": "user", "content": summarized_content})
+    user_query = data.get('query', '')
+    formatted_message = f"Answer the following user query using the provided web result summary\n User query: {user_query} \n Web Result Summary: {summarized_content}"
+    chat_history.append({"role": "user", "content": formatted_message})
     
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
